@@ -1,0 +1,30 @@
+package manager;
+
+public enum Commands {
+    JOIN("Let a Bot join your Channel", "!join"),
+    LEAVE("Let a Bot leave your Channel", "!leave"),
+    NEXT("Plays Next Song", "!next"),
+    PREV("Plays Previous Song", "!prev"),
+    PAUSE("Pauses Current Song", "!pause"),
+    RESUME("Resumes Current Song", "!resume"),
+    PLAYMODE("Change the Playmode to NORMAL, LOOPONE or LOOPALL", "!playmode <NORMAL/LOOPONE/LOOPALL>"),
+    FORWARD("Forwards Song by <seconds> (backwards with minus)", "!forward <seconds>"),
+    JUMP("Jumps to <seconds> in Song", "!jump <seconds>");
+    //LIST("Shows Current Song and upcoming Songs(10)", "!list");
+
+    private String desc;
+    private String bsp;
+
+    Commands(String desc, String bsp) {
+        this.desc = desc;
+        this.bsp = bsp;
+    }
+
+    public String getDescription() {
+        return desc;
+    }
+
+    public String getExample(){
+        return bsp;
+    }
+}
