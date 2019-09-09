@@ -9,7 +9,9 @@ public enum Commands {
     RESUME("Resumes Current Song", "!resume"),
     PLAYMODE("Change the Playmode to NORMAL, LOOPONE or LOOPALL", "!playmode <NORMAL/LOOPONE/LOOPALL>"),
     FORWARD("Forwards Song by <seconds> (backwards with minus)", "!forward <seconds>"),
-    JUMP("Jumps to <seconds> in Song", "!jump <seconds>");
+    JUMP("Jumps to <seconds> in Song", "!jump <seconds>"),
+    TOKEN("Provides a unique Token to a User", "!token"),
+    NEWTOKEN("Provides a NEW unique Token to User", "!newtoken");
     //LIST("Shows Current Song and upcoming Songs(10)", "!list");
 
     private String desc;

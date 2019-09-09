@@ -1,3 +1,13 @@
 Manifest-Version: 1.0
 Main-Class: Main
+Class-Path: commons-logging-1.2.jar bcprov-jdk15on-1.60.jar google-oauth
+ -client-1.25.0.jar httpclient-4.5.6.jar base64-2.3.9.jar jackson-annota
+ tions-2.9.0.jar ts3j-f727916.jar httpcore-4.4.10.jar lavaplayer-1.3.20.
+ jar j2objc-annotations-1.1.jar dnsjava-2.1.8.jar google-api-client-1.25
+ .0.jar slf4j-api-1.7.25.jar jackson-databind-2.9.8.jar jsoup-1.11.3.jar
+  jackson-core-2.9.8.jar ini4j-0.5.1.jar gson-2.8.5.jar google-http-clie
+ nt-jackson2-1.25.0.jar commons-codec-1.10.jar google-api-services-youtu
+ be-v3-rev212-1.25.0.jar commons-io-2.6.jar guava-20.0.jar jsr305-3.0.2.
+ jar google-http-client-1.25.0.jar lava-common-1.1.0.jar commons-lang-2.
+ 6.jar lavaplayer-natives-1.3.13.jar
 

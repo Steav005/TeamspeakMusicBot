@@ -10,7 +10,7 @@ import java.io.FileReader;
 public class Config {
     public Server server;
     public Bot[] bots;
-    public Api api;
+    public String database;
 
     public static Config LoadConfig(String filepath) throws FileNotFoundException {
         File file = new File(filepath);
