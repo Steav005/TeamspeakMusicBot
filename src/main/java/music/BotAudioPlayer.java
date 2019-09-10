@@ -18,15 +18,18 @@ public class BotAudioPlayer extends AudioEventAdapter {
     private Vector<AudioTrack> queue;
     private Stack<AudioTrack> old;
     private static final int VOLUME = 18;
+    private long queueChangeID;
 
     public BotAudioPlayer(AudioPlayerManager audioPlayerManager){
         queue = new Vector<>();
         old = new Stack<>();
         this.playmode = Playmode.NORMAL;
         this.player = audioPlayerManager.createPlayer();
-        this.player.setVolume(VOLUME);
+        //Ist für Nutzer angenehmer, aber kostet VIEL Leistung
+        //this.player.setVolume(VOLUME);
         this.player.addListener(this);
         this.state = AudioPlayerState.STOPPED;
+        queueChangeID = 0;
     }
 
     public synchronized void addTrack(AudioTrack track){
@@ -34,10 +37,12 @@ public class BotAudioPlayer extends AudioEventAdapter {
 
         if(queue.size() != 0){
             queue.add(nTrack);
+            increaseQueueChangeID();
             return;
         }
 
         queue.add(nTrack);
+        increaseQueueChangeID();
 
         player.setPaused(false);
         state = AudioPlayerState.PLAYING;
@@ -51,6 +56,7 @@ public class BotAudioPlayer extends AudioEventAdapter {
             AudioTrack lastTrack = queue.lastElement();
             queue.remove(lastTrack);
             queue.add(0, lastTrack.makeClone());
+            increaseQueueChangeID();
 
             player.startTrack(queue.firstElement(), false);
             state = AudioPlayerState.PLAYING;
@@ -64,6 +70,7 @@ public class BotAudioPlayer extends AudioEventAdapter {
         if(queue.size() > 0) queue.set(0, queue.firstElement().makeClone());
 
         queue.add(0, track.makeClone());
+        increaseQueueChangeID();
 
         player.startTrack(queue.firstElement(), false);
         state = AudioPlayerState.PLAYING;
@@ -83,9 +90,11 @@ public class BotAudioPlayer extends AudioEventAdapter {
 
         if(queue.size() == 0) {
             state = AudioPlayerState.STOPPED;
+            increaseQueueChangeID();
             return;
         }else{
             queue.set(0, queue.firstElement().makeClone());
+            increaseQueueChangeID();
 
             player.startTrack(queue.firstElement(),false);
             state = AudioPlayerState.PLAYING;
@@ -125,6 +134,16 @@ public class BotAudioPlayer extends AudioEventAdapter {
         }
     }
 
+    private synchronized void increaseQueueChangeID(){
+        if(queueChangeID == Long.MAX_VALUE)
+            queueChangeID = 0;
+        queueChangeID += 1;
+    }
+
+    public synchronized long getLastQueueChange() {
+        return queueChangeID;
+    }
+
     public synchronized void changePlaymode(Playmode playmode){
         if(playmode != null) this.playmode = playmode;
     }
@@ -162,6 +181,7 @@ public class BotAudioPlayer extends AudioEventAdapter {
                 queue.add(queue.firstElement().makeClone());
                 queue.remove(0);
                 queue.set(0, queue.firstElement().makeClone());
+                increaseQueueChangeID();
 
                 player.startTrack(queue.firstElement(), false);
                 break;

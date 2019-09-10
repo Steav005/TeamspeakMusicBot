@@ -1,6 +1,6 @@
 package manager;
 
-public enum Commands {
+public enum Command {
     JOIN("Let a Bot join your Channel", "!join"),
     LEAVE("Let a Bot leave your Channel", "!leave"),
     NEXT("Plays Next Song", "!next"),
@@ -11,13 +11,14 @@ public enum Commands {
     FORWARD("Forwards Song by <seconds> (backwards with minus)", "!forward <seconds>"),
     JUMP("Jumps to <seconds> in Song", "!jump <seconds>"),
     TOKEN("Provides a unique Token to a User", "!token"),
-    NEWTOKEN("Provides a NEW unique Token to User", "!newtoken");
+    NEWTOKEN("Provides a NEW unique Token to User", "!newtoken"),
+    ADDRESS("Provedes the RESTful API Address", "!address");
     //LIST("Shows Current Song and upcoming Songs(10)", "!list");
 
     private String desc;
     private String bsp;
 
-    Commands(String desc, String bsp) {
+    Command(String desc, String bsp) {
         this.desc = desc;
         this.bsp = bsp;
     }

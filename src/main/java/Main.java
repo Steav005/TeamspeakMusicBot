@@ -1,19 +1,19 @@
 import config.Config;
-import manager.BotManager;
-import rest.MongoLinker;
+
+import rest.JsonDataBaseLinker;
+import rest.RestServer;
 
 public class Main {
     public static void main(String[] args){
         try {
             Config c = Config.LoadConfig("config.json");
 
+            //Preload Database
+            JsonDataBaseLinker db = JsonDataBaseLinker.getInstance();
 
-            MongoLinker mongo = MongoLinker.getInstance();
-            mongo.connect(c.database);
-            System.out.println(mongo.getUserIDFromToken("lamen"));
-            String t = mongo.addUser(15);
-            System.out.println(t);
-            System.out.println(mongo.getUserIDFromToken(t));
+            //Initiate RestServer
+            RestServer server = new RestServer();
+            server.start();
 
             while (true){
                 try {

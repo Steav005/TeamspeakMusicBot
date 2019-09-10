@@ -11,10 +11,8 @@ import config.Config;
 import music.BotAudioPlayer;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeoutException;
 
 public class BotManager {
     private final AudioPlayerManager AUDIOPLAYERMANAGER;
@@ -22,6 +20,7 @@ public class BotManager {
     private MasterBot master;
     private Config config;
     private ArrayList<SlaveBot> SlaveBots;
+    private String restAddress;
 
     private BotManager(){
         this.AUDIOPLAYERMANAGER = new DefaultAudioPlayerManager();
@@ -69,6 +68,25 @@ public class BotManager {
         }
     }
 
+    public int getChannelByUser(int userid){
+        return master.getClientChannelID(userid);
+    }
+
+    public SlaveBot getBotByUser(int userId){
+        try {
+            int channelId = getChannelByUser(userId);
+            if(channelId == -1) return null;
+
+            for (SlaveBot b: SlaveBots){
+                if(b.getWantedChannel() == channelId)
+                    return b;
+            }
+            return null;
+        }catch (Exception e){
+            return null;
+        }
+    }
+
     public void reloadBot(SlaveBot bot){
         try {
             SlaveBots.remove(bot);
@@ -104,12 +122,27 @@ public class BotManager {
         return true;
     }
 
+    public String[] getBotUIDList(){
+        SlaveBot[] botList = (SlaveBot[]) SlaveBots.toArray();
+        String[] botsUIDList = new String[botList.length];
+
+        for (int i = 0; i < botList.length; i++){
+            botsUIDList[i] = botList[i].bot.identity;
+        }
+
+        return botsUIDList;
+    }
+
     public BotAudioPlayer getNewPlayer(){
         return new BotAudioPlayer(AUDIOPLAYERMANAGER);
     }
 
     public AudioPlayerManager getAudioPlayerManager(){
         return AUDIOPLAYERMANAGER;
+    }
+
+    public String getRestAddress(){
+        return restAddress;
     }
 
     public static BotManager getInstance(){

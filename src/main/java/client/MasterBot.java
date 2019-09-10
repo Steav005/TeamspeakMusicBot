@@ -1,10 +1,15 @@
 package client;
 
 import com.github.manevolent.ts3j.api.TextMessageTargetMode;
+import com.github.manevolent.ts3j.command.CommandException;
 import com.github.manevolent.ts3j.event.ClientMovedEvent;
 import com.github.manevolent.ts3j.event.ConnectedEvent;
 import com.github.manevolent.ts3j.event.TextMessageEvent;
 import manager.BotManager;
+import manager.Command;
+import music.BotAudioPlayer;
+import music.enums.Playmode;
+import rest.JsonDataBaseLinker;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +29,82 @@ public class MasterBot extends TeamspeakBot {
                 || e.getMessage().isEmpty()
                 || e.getInvokerId() == client.getClientId()) return;
 
-        BotManager.getInstance().BotJoinChannel(getClientChannelID(e.getInvokerId()));
+        //BotManager.getInstance().BotJoinChannel(getClientChannelID(e.getInvokerId()));
+        SlaveBot bot = BotManager.getInstance().getBotByUser(e.getInvokerId());
+
+        if(e.getMessage().startsWith("!"))
+            handleCommand(e, bot);
+        else
+            bot.addTrackToPlayer(e.getInvokerId(), e.getMessage().replace("[URL]", "").replace("[/URL]", ""));
+    }
+
+    private void handleCommand(TextMessageEvent e, SlaveBot bot){
+        String[] cmd = e.getMessage().substring(1).split(" ");
+
+        switch (Command.valueOf(cmd[0].toUpperCase())){
+            case JOIN:
+                BotManager.getInstance().BotJoinChannel(getClientChannelID(e.getInvokerId()));
+                return;
+            case LEAVE:
+                try {
+                    bot.disconnect();
+                } catch (Exception f){
+                    //Ignore
+                }
+                return;
+            case NEXT:
+                if(bot == null) return;
+                bot.getPlayer().nextSong();
+                return;
+            case PREV:
+                if(bot == null) return;
+                bot.getPlayer().previousSong();
+                return;
+            case PAUSE:
+                if(bot == null) return;
+                bot.getPlayer().pauseSong();
+                return;
+            case RESUME:
+                if(bot == null) return;
+                bot.getPlayer().resumeSong();
+                return;
+            case PLAYMODE:
+                Playmode mode = Playmode.valueOf(cmd[1].toUpperCase());
+                if(bot == null) return;
+                bot.getPlayer().changePlaymode(mode);
+                return;
+            case FORWARD:
+                if(bot == null) return;
+                bot.getPlayer().forward((long)(Double.parseDouble(cmd[1]) * 1000));
+                return;
+            case JUMP:
+                if(bot == null) return;
+                bot.getPlayer().jump((long)(Double.parseDouble(cmd[1]) * 1000));
+                return;
+            case TOKEN:
+                try {
+                    client.sendPrivateMessage(e.getInvokerId(), JsonDataBaseLinker.getInstance().getTokenFromUserID(e.getInvokerId()));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                return;
+            case NEWTOKEN:
+                try{
+                    client.sendPrivateMessage(e.getInvokerId(), JsonDataBaseLinker.getInstance().addUser(e.getInvokerId()));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+                return;
+            case ADDRESS:
+                try {
+                    client.sendPrivateMessage(e.getInvokerId(), BotManager.getInstance().getRestAddress());
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+                return;
+            default:
+                return;
+        }
     }
 
     public void joinBotChannel(){

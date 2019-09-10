@@ -9,11 +9,10 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import config.Bot;
 import manager.BotManager;
-import manager.Commands;
+import manager.Command;
 import music.BotAudioPlayer;
 import music.enums.Playmode;
-import music.json.Player;
-import text.MessageBuilder;
+import rest.JsonDataBaseLinker;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,6 +51,10 @@ public class SlaveBot extends TeamspeakBot {
         return wantedChannel != -1;
     }
 
+    public BotAudioPlayer getPlayer() {
+        return player;
+    }
+
     @Override
     public void onTextMessage(TextMessageEvent e) {
         if(e.getTargetMode() != TextMessageTargetMode.CLIENT
@@ -59,18 +62,20 @@ public class SlaveBot extends TeamspeakBot {
                 || e.getInvokerId() == client.getClientId()
                 || !inSameChannel(e.getInvokerId())) return;
 
-        String message = e.getMessage();
-
-        if(message.startsWith("!"))
+        if(e.getMessage().startsWith("!"))
             handleCommand(e);
         else
             addTrackToPlayer(e.getInvokerId(), e.getMessage().replace("[URL]", "").replace("[/URL]", ""));
     }
 
-    private void handleCommand(TextMessageEvent e){
+    public void disconnect() throws InterruptedException, ExecutionException, TimeoutException, IOException {
+        client.disconnect();
+    }
+
+    public void handleCommand(TextMessageEvent e){
         String[] cmd = e.getMessage().substring(1).split(" ");
 
-        switch (Commands.valueOf(cmd[0].toUpperCase())){
+        switch (Command.valueOf(cmd[0].toUpperCase())){
             case LEAVE:
                 try {
                     client.disconnect();
@@ -100,13 +105,27 @@ public class SlaveBot extends TeamspeakBot {
             case JUMP:
                 player.jump((long)(Double.parseDouble(cmd[1]) * 1000));
                 return;
-            //case LIST:
-            //    try {
-            //        client.sendPrivateMessage(e.getInvokerId(), MessageBuilder.songListBuilder(player));
-            //    } catch (Exception ex) {
-            //        ex.printStackTrace();
-            //    }
-            //    return;
+            case TOKEN:
+                try {
+                    client.sendPrivateMessage(e.getInvokerId(), JsonDataBaseLinker.getInstance().getTokenFromUserID(e.getInvokerId()));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                return;
+            case NEWTOKEN:
+                try{
+                    client.sendPrivateMessage(e.getInvokerId(), JsonDataBaseLinker.getInstance().addUser(e.getInvokerId()));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+                return;
+            case ADDRESS:
+                try {
+                    client.sendPrivateMessage(e.getInvokerId(), BotManager.getInstance().getRestAddress());
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+                return;
             default:
                 return;
         }
@@ -134,11 +153,6 @@ public class SlaveBot extends TeamspeakBot {
         //wantedChannel = -1;
         //resetPlayer();
         BotManager.getInstance().reloadBot(this);
-    }
-
-    public String getPlayerJson(){
-        Gson gson = new Gson();
-        return gson.toJson(new Player(player));
     }
 
     public void addTrackToPlayer(final int clientID, final String query){
