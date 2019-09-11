@@ -23,6 +23,24 @@ public class BotRestApi {
     }
 
     @GET
+    @Path("/player/add/{url}")
+    public Response add(@PathParam("userid") String id, @PathParam("url") String url){
+        try {
+            int user = JsonDataBaseLinker.getInstance().getUserIDFromToken(id);
+            if (user == -1) return Response.status(401).build();
+            SlaveBot bot = BotManager.getInstance().getBotByUser(user);
+            if (bot == null) return Response.status(400).build();
+
+            bot.addTrackToPlayer(user, url);
+
+            return Response.ok().build();
+        }catch (Exception e){
+            e.printStackTrace();
+            return Response.status(500).build();
+        }
+    }
+
+    @GET
     @Path("/player/pause")
     public Response pause(@PathParam("userid") String id){
         try {
