@@ -18,6 +18,7 @@ public class BotAudioPlayer extends AudioEventAdapter {
     private Vector<AudioTrack> queue;
     private Stack<AudioTrack> old;
     private static final int VOLUME = 18;
+    private static final int MAX_QUEUE = 50;
     private long queueChangeID;
 
     public BotAudioPlayer(AudioPlayerManager audioPlayerManager){
@@ -33,6 +34,7 @@ public class BotAudioPlayer extends AudioEventAdapter {
     }
 
     public synchronized void addTrack(AudioTrack track){
+        if(queue.size() >= MAX_QUEUE) return;
         AudioTrack nTrack = track.makeClone();
 
         if(queue.size() != 0){
@@ -138,6 +140,14 @@ public class BotAudioPlayer extends AudioEventAdapter {
         if(queueChangeID == Long.MAX_VALUE)
             queueChangeID = 0;
         queueChangeID += 1;
+
+        while(queue.size() > 50){
+            try {
+                queue.remove(51);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 
     public synchronized long getLastQueueChange() {
