@@ -2,13 +2,33 @@
 # Created by https://www.gitignore.io/api/java,intellij
 # Edit at https://www.gitignore.io/?templates=java,intellij
 
+#Note file
+Notes.txt
+
 #Config & Data
 config.json
 logintoken.json
 #Identities
 identities/*.ini
 
+
+### Maven ###
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# End of https://www.gitignore.io/api/maven
+
 ### Intellij ###
+.idea/*
+target/*
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
