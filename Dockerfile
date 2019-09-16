@@ -1,9 +1,20 @@
+#Build from pom with maven
+FROM maven:3-jdk-11-slim as build 
+WORKDIR /build
+ADD * /build/
+RUN mvn package
+
+#Create final image
 FROM adoptopenjdk:11-jre-openj9
 
-WORKDIR /musicbot
+#Copy files from build
+WORKDIR /jar
+COPY --from=build /build/jars/* ./
+RUN mv *jar-with-dependencies.jar Musicbot.jar
+RUN rm Teamspeak*.jar
 
-#Copy Current Jar to musicbot dir
-ADD jars/TeamspeakMusicBot-0.2.3-jar-with-dependencies.jar /jar/Musicbot.jar
+#initiate parameter for run
+WORKDIR /musicbot
 
 #Start Bot
 CMD java -jar /jar/Musicbot.jar
