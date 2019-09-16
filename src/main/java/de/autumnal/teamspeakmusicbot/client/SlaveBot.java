@@ -1,18 +1,17 @@
-package client;
+package de.autumnal.teamspeakmusicbot.client;
 
 import com.github.manevolent.ts3j.api.TextMessageTargetMode;
 import com.github.manevolent.ts3j.event.*;
-import com.google.gson.Gson;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import config.Bot;
-import manager.BotManager;
-import manager.Command;
-import music.BotAudioPlayer;
-import music.enums.Playmode;
-import rest.JsonDataBaseLinker;
+import de.autumnal.teamspeakmusicbot.config.Bot;
+import de.autumnal.teamspeakmusicbot.manager.BotManager;
+import de.autumnal.teamspeakmusicbot.manager.Command;
+import de.autumnal.teamspeakmusicbot.music.BotAudioPlayer;
+import de.autumnal.teamspeakmusicbot.music.enums.Playmode;
+import de.autumnal.teamspeakmusicbot.rest.JsonDataBaseLinker;
 
 import java.io.File;
 import java.io.IOException;

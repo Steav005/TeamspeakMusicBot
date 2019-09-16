@@ -1,4 +1,4 @@
-package rest;
+package de.autumnal.teamspeakmusicbot.rest;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

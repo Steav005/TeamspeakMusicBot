@@ -1,4 +1,4 @@
-package rest;
+package de.autumnal.teamspeakmusicbot.rest;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -19,7 +19,7 @@ public class RestServer {
 
         ServletHolder serHol = ctx.addServlet(ServletContainer.class, "/*");
         serHol.setInitOrder(0);
-        serHol.setInitParameter("jersey.config.server.provider.classnames",
+        serHol.setInitParameter("jersey.de.autumnal.teamspeakmusicbot.config.server.provider.classnames",
                 BotRestApi.class.getCanonicalName());
     }
 

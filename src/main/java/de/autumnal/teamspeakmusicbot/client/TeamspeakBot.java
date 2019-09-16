@@ -1,6 +1,5 @@
-package client;
+package de.autumnal.teamspeakmusicbot.client;
 
-import com.github.manevolent.ts3j.api.Channel;
 import com.github.manevolent.ts3j.api.Client;
 import com.github.manevolent.ts3j.audio.Microphone;
 import com.github.manevolent.ts3j.event.TS3Listener;

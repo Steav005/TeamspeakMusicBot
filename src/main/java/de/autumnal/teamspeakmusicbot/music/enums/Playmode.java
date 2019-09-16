@@ -1,4 +1,4 @@
-package music.enums;
+package de.autumnal.teamspeakmusicbot.music.enums;
 
 public enum Playmode {
     NORMAL,

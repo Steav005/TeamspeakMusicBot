@@ -1,7 +1,4 @@
-package text;
-
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import music.BotAudioPlayer;
+package de.autumnal.teamspeakmusicbot.text;
 
 import java.awt.*;
 

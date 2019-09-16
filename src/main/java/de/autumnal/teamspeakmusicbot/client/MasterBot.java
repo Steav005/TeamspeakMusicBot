@@ -1,15 +1,13 @@
-package client;
+package de.autumnal.teamspeakmusicbot.client;
 
 import com.github.manevolent.ts3j.api.TextMessageTargetMode;
-import com.github.manevolent.ts3j.command.CommandException;
 import com.github.manevolent.ts3j.event.ClientMovedEvent;
 import com.github.manevolent.ts3j.event.ConnectedEvent;
 import com.github.manevolent.ts3j.event.TextMessageEvent;
-import manager.BotManager;
-import manager.Command;
-import music.BotAudioPlayer;
-import music.enums.Playmode;
-import rest.JsonDataBaseLinker;
+import de.autumnal.teamspeakmusicbot.manager.BotManager;
+import de.autumnal.teamspeakmusicbot.manager.Command;
+import de.autumnal.teamspeakmusicbot.music.enums.Playmode;
+import de.autumnal.teamspeakmusicbot.rest.JsonDataBaseLinker;
 
 import java.io.File;
 import java.io.IOException;

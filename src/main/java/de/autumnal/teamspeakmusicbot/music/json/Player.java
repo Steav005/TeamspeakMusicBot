@@ -1,9 +1,9 @@
-package music.json;
+package de.autumnal.teamspeakmusicbot.music.json;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import music.BotAudioPlayer;
-import music.enums.AudioPlayerState;
-import music.enums.Playmode;
+import de.autumnal.teamspeakmusicbot.music.BotAudioPlayer;
+import de.autumnal.teamspeakmusicbot.music.enums.AudioPlayerState;
+import de.autumnal.teamspeakmusicbot.music.enums.Playmode;
 
 public class Player {
     public Playmode playmode;

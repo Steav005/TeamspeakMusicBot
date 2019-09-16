@@ -1,4 +1,4 @@
-package manager;
+package de.autumnal.teamspeakmusicbot.manager;
 
 public enum Command {
     JOIN("Let a Bot join your Channel", "!join"),

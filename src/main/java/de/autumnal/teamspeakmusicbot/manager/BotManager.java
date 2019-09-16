@@ -1,14 +1,14 @@
-package manager;
+package de.autumnal.teamspeakmusicbot.manager;
 
-import client.MasterBot;
-import client.SlaveBot;
+import de.autumnal.teamspeakmusicbot.client.MasterBot;
+import de.autumnal.teamspeakmusicbot.client.SlaveBot;
 import com.sedmelluq.discord.lavaplayer.format.OpusAudioDataFormat;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
-import config.Bot;
-import config.Config;
-import music.BotAudioPlayer;
+import de.autumnal.teamspeakmusicbot.config.Bot;
+import de.autumnal.teamspeakmusicbot.config.Config;
+import de.autumnal.teamspeakmusicbot.music.BotAudioPlayer;
 
 import java.io.File;
 import java.util.ArrayList;

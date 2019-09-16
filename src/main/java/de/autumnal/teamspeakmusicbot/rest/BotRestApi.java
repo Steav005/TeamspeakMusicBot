@@ -1,11 +1,10 @@
-package rest;
+package de.autumnal.teamspeakmusicbot.rest;
 
-import client.SlaveBot;
+import de.autumnal.teamspeakmusicbot.client.SlaveBot;
 import com.google.gson.Gson;
-import manager.BotManager;
-import music.BotAudioPlayer;
-import music.enums.Playmode;
-import music.json.Player;
+import de.autumnal.teamspeakmusicbot.manager.BotManager;
+import de.autumnal.teamspeakmusicbot.music.enums.Playmode;
+import de.autumnal.teamspeakmusicbot.music.json.Player;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

@@ -1,4 +1,4 @@
-package config;
+package de.autumnal.teamspeakmusicbot.config;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;

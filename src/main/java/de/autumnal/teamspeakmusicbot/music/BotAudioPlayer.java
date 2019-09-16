@@ -1,12 +1,12 @@
-package music;
+package de.autumnal.teamspeakmusicbot.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
-import music.enums.AudioPlayerState;
-import music.enums.Playmode;
+import de.autumnal.teamspeakmusicbot.music.enums.AudioPlayerState;
+import de.autumnal.teamspeakmusicbot.music.enums.Playmode;
 
 import java.util.Stack;
 import java.util.Vector;

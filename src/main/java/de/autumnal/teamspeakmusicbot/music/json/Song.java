@@ -1,4 +1,4 @@
-package music.json;
+package de.autumnal.teamspeakmusicbot.music.json;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 

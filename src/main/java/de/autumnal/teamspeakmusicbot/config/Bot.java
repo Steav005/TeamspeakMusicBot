@@ -1,4 +1,4 @@
-package config;
+package de.autumnal.teamspeakmusicbot.config;
 
 public class Bot {
     public String name;
