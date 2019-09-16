@@ -1,7 +1,8 @@
 #Build from pom with maven
-FROM maven:3-jdk-11-slim as build 
+FROM maven:3-jdk-11 as build 
 WORKDIR /build
-ADD * /build/
+ADD pom.xml /build/
+ADD src /build/src/
 RUN mvn package
 
 #Create final image
