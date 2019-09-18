@@ -6,7 +6,7 @@ ADD src /build/src/
 RUN mvn package
 
 #Create final image
-FROM adoptopenjdk:11-jre-openj9
+FROM openjdk:11-jre-slim
 
 #Copy files from build
 WORKDIR /jar

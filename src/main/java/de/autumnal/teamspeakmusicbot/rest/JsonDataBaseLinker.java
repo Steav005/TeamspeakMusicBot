@@ -22,6 +22,7 @@ public class JsonDataBaseLinker {
     }
 
     public int getUserIDFromToken(String token) {
+        if(token == null) return -1;
         return database.getOrDefault(token, -1);
     }
 

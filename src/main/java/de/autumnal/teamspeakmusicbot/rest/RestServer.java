@@ -19,8 +19,8 @@ public class RestServer {
 
         ServletHolder serHol = ctx.addServlet(ServletContainer.class, "/*");
         serHol.setInitOrder(0);
-        serHol.setInitParameter("jersey.de.autumnal.teamspeakmusicbot.config.server.provider.classnames",
-                BotRestApi.class.getCanonicalName());
+        serHol.setInitParameter("jersey.config.server.provider.classnames",
+                BotRestApiV1.class.getCanonicalName());
     }
 
     public void start() throws Exception {

@@ -9,7 +9,7 @@ import de.autumnal.teamspeakmusicbot.rest.RestServer;
 public class Main {
     public static void main(String[] args){
         try {
-            Config c = Config.LoadConfig("de.autumnal.teamspeakmusicbot.config.json");
+            Config c = Config.LoadConfig("config.json");
 
             //Preload Database
             JsonDataBaseLinker db = JsonDataBaseLinker.getInstance();
@@ -18,15 +18,15 @@ public class Main {
             RestServer server = new RestServer();
             server.start();
 
-            BotManager.getInstance().start(c);
+            //BotManager.getInstance().start(c);
 
-            //while (true){
-            //    try {
-            //        Thread.sleep(1000);
-            //    }catch (Exception e){
-            //        e.printStackTrace();
-            //    }
-            //}
+            while (true){
+                try {
+                    Thread.sleep(1000);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
