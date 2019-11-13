@@ -2,6 +2,7 @@ package de.autumnal.teamspeakmusicbot.manager;
 
 public enum Command {
     //HELP("Shows this Help Message", "!help"),
+    STATUS("Shows the current Playstatus", "status"),
     ADD("Adds song to current Playlist", "<Link>"),
     JOIN("Let a Bot join your Channel", "!join"),
     LEAVE("Let a Bot leave your Channel", "!leave"),

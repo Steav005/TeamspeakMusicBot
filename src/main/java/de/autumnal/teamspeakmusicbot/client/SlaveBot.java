@@ -82,6 +82,13 @@ public class SlaveBot extends TeamspeakBot {
             //        ex.printStackTrace();
             //    }
             //    return;
+            case STATUS:
+                try{
+                    client.sendPrivateMessage(e.getInvokerId(), player.getPlayerStatusMessage());
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+                return;
             case LEAVE:
                 try {
                     client.disconnect();

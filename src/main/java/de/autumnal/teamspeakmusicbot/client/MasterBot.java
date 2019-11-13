@@ -47,6 +47,14 @@ public class MasterBot extends TeamspeakBot {
             //        ex.printStackTrace();
             //    }
             //    return;
+            case STATUS:
+                if(bot == null) return;
+                try {
+                    client.sendPrivateMessage(e.getInvokerId(), bot.getPlayer().getPlayerStatusMessage());
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+                return;
             case JOIN:
                 BotManager.getInstance().BotJoinChannel(getClientChannelID(e.getInvokerId()));
                 return;

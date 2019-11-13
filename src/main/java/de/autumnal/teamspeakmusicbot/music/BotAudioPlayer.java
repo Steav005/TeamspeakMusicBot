@@ -203,6 +203,16 @@ public class BotAudioPlayer extends AudioEventAdapter {
         player.destroy();
     }
 
+    public String getPlayerStatusMessage(){
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("\r\n[").append(state.toString().toUpperCase()).append("]\r\n")
+                .append("Playmode: ").append(playmode.toString().toUpperCase()).append("\r\n")
+                .append("Playlist length: ").append(queue.size()).append("/").append(MAX_QUEUE);
+
+        return sb.toString();
+    }
+
     public String getPlaylistString(){
         StringBuilder sb = new StringBuilder();
         AudioTrack[] playlist = getPlaylist();
