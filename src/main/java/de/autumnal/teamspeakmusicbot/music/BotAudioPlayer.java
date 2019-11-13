@@ -203,6 +203,31 @@ public class BotAudioPlayer extends AudioEventAdapter {
         player.destroy();
     }
 
+    public String getPlaylistString(){
+        StringBuilder sb = new StringBuilder();
+        AudioTrack[] playlist = getPlaylist();
+
+        if(playlist.length == 0)
+            return "[Empty Playlist]";
+
+        sb.append("[").append(state.toString().toUpperCase()).append("] ");
+        sb.append("[").append(playmode.toString().toUpperCase()).append("]");
+
+        for(int i = 0; i < 10 && i < playlist.length; i++){
+            AudioTrack song = playlist[i];
+            sb.append("\r\n");
+            if(i != 0) sb.append(i).append(". ");
+
+            sb.append(song.getInfo().title.substring(0, 50))
+                    .append(" [");
+            if(i == 0) sb.append(longToStringTime(song.getPosition()))
+                            .append("/");
+            sb.append(longToStringTime(song.getDuration())).append("]");
+        }
+
+        return sb.toString();
+    }
+
     public AudioPlayerSendHandler getSendHandler() {
         return new AudioPlayerSendHandler(player);
     }
@@ -223,5 +248,27 @@ public class BotAudioPlayer extends AudioEventAdapter {
         }
 
         return tracks;
+    }
+
+    public static String longToStringTime(long time){
+        time = time / 1000;
+        long minutes = time % 3600;
+        long hours = ((time - minutes) / 3600);
+        long secs = minutes % 60;
+        minutes = ((minutes - secs) / 60);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        if(hours > 0) {
+            if(hours < 10) stringBuilder.append(0);
+            stringBuilder.append(hours).append(":");
+        }
+
+        if(minutes < 10) stringBuilder.append(0);
+        stringBuilder.append(minutes).append(":");
+
+        if(secs < 10) stringBuilder.append(0);
+        stringBuilder.append(secs);
+
+        return stringBuilder.toString();
     }
 }

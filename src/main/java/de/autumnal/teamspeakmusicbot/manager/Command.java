@@ -1,6 +1,8 @@
 package de.autumnal.teamspeakmusicbot.manager;
 
 public enum Command {
+    HELP("Shows this Help Message", "!help"),
+    ADD("Adds song to current Playlist", "<Link>"),
     JOIN("Let a Bot join your Channel", "!join"),
     LEAVE("Let a Bot leave your Channel", "!leave"),
     NEXT("Plays Next Song", "!next"),
@@ -12,8 +14,8 @@ public enum Command {
     JUMP("Jumps to <seconds> in Song", "!jump <seconds>"),
     TOKEN("Provides a unique Token to a User", "!token"),
     NEWTOKEN("Provides a NEW unique Token to User", "!newtoken"),
-    ADDRESS("Provedes the RESTful API Address", "!address");
-    //LIST("Shows Current Song and upcoming Songs(10)", "!list");
+    ADDRESS("Provides the RESTful API Address", "!address"),
+    LIST("Shows Current Song and upcoming Songs(10)", "!list");
 
     private String desc;
     private String bsp;
@@ -29,5 +31,16 @@ public enum Command {
 
     public String getExample(){
         return bsp;
+    }
+
+    public static String getCommandList() {
+        StringBuilder sb = new StringBuilder();
+
+        for (Command cmd: Command.values())
+            sb.append(cmd.name()).append(": ")
+                    .append(cmd.bsp).append("\r\n\t")
+                    .append(cmd.desc).append("\r\n");
+
+        return sb.toString();
     }
 }

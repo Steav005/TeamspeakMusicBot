@@ -40,6 +40,13 @@ public class MasterBot extends TeamspeakBot {
         String[] cmd = e.getMessage().substring(1).split(" ");
 
         switch (Command.valueOf(cmd[0].toUpperCase())){
+            case HELP:
+                try {
+                    client.sendPrivateMessage(e.getInvokerId(), Command.getCommandList());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                return;
             case JOIN:
                 BotManager.getInstance().BotJoinChannel(getClientChannelID(e.getInvokerId()));
                 return;
@@ -100,7 +107,17 @@ public class MasterBot extends TeamspeakBot {
                     ex.printStackTrace();
                 }
                 return;
-            default:
+            case LIST:
+                if(bot == null) return;
+                try {
+                    client.sendPrivateMessage(e.getInvokerId(), bot.getPlayer().getPlaylistString());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            default: //Add case
+                if(bot == null) return;
+
+                bot.addTrackToPlayer(e.getInvokerId(), e.getMessage());
                 return;
         }
     }
