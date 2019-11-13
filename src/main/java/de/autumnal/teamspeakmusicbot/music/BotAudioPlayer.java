@@ -26,7 +26,7 @@ public class BotAudioPlayer extends AudioEventAdapter {
         old = new Stack<>();
         this.playmode = Playmode.NORMAL;
         this.player = audioPlayerManager.createPlayer();
-        this.player.setVolume(99);
+        this.player.setVolume(VOLUME);
         this.player.addListener(this);
 
         this.state = AudioPlayerState.STOPPED;
