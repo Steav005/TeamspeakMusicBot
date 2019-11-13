@@ -35,6 +35,7 @@ public class BotManager {
 
     public void start(Config conf){
         this.config = conf;
+        restAddress = conf.restaddress;
         String masterIdentity = "";
 
         try {

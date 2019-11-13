@@ -18,15 +18,7 @@ public class Main {
             RestServer server = new RestServer();
             server.start();
 
-            //BotManager.getInstance().start(c);
-
-            while (true){
-                try {
-                    Thread.sleep(1000);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
+            BotManager.getInstance().start(c);
         } catch (Exception e) {
             e.printStackTrace();
         }

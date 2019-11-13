@@ -75,13 +75,13 @@ public class SlaveBot extends TeamspeakBot {
         String[] cmd = e.getMessage().substring(1).split(" ");
 
         switch (Command.valueOf(cmd[0].toUpperCase())){
-            case HELP:
-                try {
-                    client.sendPrivateMessage(e.getInvokerId(), Command.getCommandList());
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-                return;
+            //case HELP:
+            //    try {
+            //        client.sendPrivateMessage(e.getInvokerId(), Command.getCommandList());
+            //    } catch (Exception ex) {
+            //        ex.printStackTrace();
+            //    }
+            //    return;
             case LEAVE:
                 try {
                     client.disconnect();
@@ -132,13 +132,13 @@ public class SlaveBot extends TeamspeakBot {
                     ex.printStackTrace();
                 }
                 return;
-            case LIST:
-                try {
-                    client.sendPrivateMessage(e.getInvokerId(), player.getPlaylistString());
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                }
-                return;
+            //case LIST:
+            //    try {
+            //        client.sendPrivateMessage(e.getInvokerId(), player.getPlaylistString());
+            //    }catch (Exception ex){
+            //        ex.printStackTrace();
+            //    }
+            //    return;
             default: //ADD case
                 addTrackToPlayer(e.getInvokerId(), e.getMessage());
                 return;
