@@ -1,5 +1,7 @@
 package de.autumnal.teamspeakmusicbot.manager;
 
+import com.sedmelluq.discord.lavaplayer.format.AudioDataFormat;
+import com.sedmelluq.discord.lavaplayer.player.AudioConfiguration;
 import de.autumnal.teamspeakmusicbot.client.MasterBot;
 import de.autumnal.teamspeakmusicbot.client.SlaveBot;
 import com.sedmelluq.discord.lavaplayer.format.OpusAudioDataFormat;
@@ -21,14 +23,16 @@ public class BotManager {
     private Config config;
     private ArrayList<SlaveBot> SlaveBots;
     private String restAddress;
+    public static final AudioDataFormat AUDIO_FORMAT = new OpusAudioDataFormat(2,48000,960);
 
     private BotManager(){
         this.AUDIOPLAYERMANAGER = new DefaultAudioPlayerManager();
         //Reduced to 1 channel so that the .provide() byte[] does not exceed ~500 entries
-        AUDIOPLAYERMANAGER.getConfiguration().setOutputFormat(new OpusAudioDataFormat(1,48000,960));
+        //Apparently the byte array size gets normalized below 500 by changing the volume; Feels bad man
+        AUDIOPLAYERMANAGER.getConfiguration().setOutputFormat(AUDIO_FORMAT);
 
         AudioSourceManagers.registerRemoteSources(AUDIOPLAYERMANAGER);
-        AudioSourceManagers.registerLocalSource(AUDIOPLAYERMANAGER);
+        //AudioSourceManagers.registerLocalSource(AUDIOPLAYERMANAGER);
 
         SlaveBots = new ArrayList<>();
     }
@@ -150,6 +154,10 @@ public class BotManager {
         if(singleton != null) return singleton;
 
         return createSingleton();
+    }
+
+    public static AudioConfiguration getAudioConfiguration(){
+        return getInstance().AUDIOPLAYERMANAGER.getConfiguration();
     }
 
     private static synchronized BotManager createSingleton(){

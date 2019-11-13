@@ -17,7 +17,7 @@ public class BotAudioPlayer extends AudioEventAdapter {
     private AudioPlayerState state;
     private Vector<AudioTrack> queue;
     private Stack<AudioTrack> old;
-    private static final int VOLUME = 18;
+    private static final int VOLUME = 16;
     private static final int MAX_QUEUE = 50;
     private long queueChangeID;
 
@@ -26,9 +26,9 @@ public class BotAudioPlayer extends AudioEventAdapter {
         old = new Stack<>();
         this.playmode = Playmode.NORMAL;
         this.player = audioPlayerManager.createPlayer();
-        //Ist für Nutzer angenehmer, aber kostet VIEL Leistung
-        //this.player.setVolume(VOLUME);
+        this.player.setVolume(99);
         this.player.addListener(this);
+
         this.state = AudioPlayerState.STOPPED;
         queueChangeID = 0;
     }

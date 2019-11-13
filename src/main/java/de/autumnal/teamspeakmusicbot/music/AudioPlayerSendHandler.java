@@ -2,6 +2,7 @@ package de.autumnal.teamspeakmusicbot.music;
 
 import com.github.manevolent.ts3j.audio.Microphone;
 import com.github.manevolent.ts3j.enums.CodecType;
+import com.sedmelluq.discord.lavaplayer.filter.volume.AudioFrameVolumeChanger;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.playback.AudioFrame;
 
