@@ -19,6 +19,20 @@ public class BotRestApiV1 {
         return Response.status(418).build();
     }
 
+    @GET
+    @Path("/verify")
+    public Response verify(@HeaderParam("token")  String token){
+        try {
+            int user = JsonDataBaseLinker.getInstance().getUserIDFromToken(token);
+            if (user == -1) return Response.status(401).build();
+
+            return Response.ok().build();
+        }catch (Exception e){
+            e.printStackTrace();
+            return Response.status(500).build();
+        }
+    }
+
     @POST
     @Path("/player/song")
     public Response add(@HeaderParam("token") String token, String song){
