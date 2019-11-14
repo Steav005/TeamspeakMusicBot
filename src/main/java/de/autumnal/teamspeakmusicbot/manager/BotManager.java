@@ -48,9 +48,9 @@ public class BotManager {
 
                 master = new MasterBot(new File(b.identity), conf.server.masterChannelID);
                 master.setNickname(b.name);
-                if(conf.server.password != null)
-                    master.connect(conf.server.address, conf.server.password);
-                else master.connect(conf.server.address);
+
+                connectMaster();
+
                 masterIdentity = b.identity;
                 break;
             }
@@ -70,6 +70,17 @@ public class BotManager {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void connectMaster(){
+        try {
+            if (config.server.password != null)
+                master.connect(config.server.address, config.server.password);
+            else master.connect(config.server.address);
+        }catch(Exception e){
+            e.printStackTrace();
+            connectMaster();
         }
     }
 

@@ -2,6 +2,7 @@ package de.autumnal.teamspeakmusicbot.client;
 
 import com.github.manevolent.ts3j.api.Client;
 import com.github.manevolent.ts3j.audio.Microphone;
+import com.github.manevolent.ts3j.event.DisconnectedEvent;
 import com.github.manevolent.ts3j.event.TS3Listener;
 import com.github.manevolent.ts3j.identity.LocalIdentity;
 import com.github.manevolent.ts3j.protocol.socket.client.LocalTeamspeakClientSocket;

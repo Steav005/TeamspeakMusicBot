@@ -3,6 +3,7 @@ package de.autumnal.teamspeakmusicbot.client;
 import com.github.manevolent.ts3j.api.TextMessageTargetMode;
 import com.github.manevolent.ts3j.event.ClientMovedEvent;
 import com.github.manevolent.ts3j.event.ConnectedEvent;
+import com.github.manevolent.ts3j.event.DisconnectedEvent;
 import com.github.manevolent.ts3j.event.TextMessageEvent;
 import de.autumnal.teamspeakmusicbot.manager.BotManager;
 import de.autumnal.teamspeakmusicbot.manager.Command;
@@ -34,6 +35,12 @@ public class MasterBot extends TeamspeakBot {
             handleCommand(e, bot);
         else
             bot.addTrackToPlayer(e.getInvokerId(), e.getMessage().replace("[URL]", "").replace("[/URL]", ""));
+    }
+
+    @Override
+    public void onDisconnected(DisconnectedEvent e) {
+        //Try to reconnect
+        BotManager.getInstance().connectMaster();
     }
 
     private void handleCommand(TextMessageEvent e, SlaveBot bot){
