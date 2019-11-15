@@ -34,6 +34,7 @@ public abstract class TeamspeakBot implements TS3Listener {
 
     public void reloadNickname(){
         try{
+            if(client.getNickname().equals(nickname)) return;
             if(nickname != null && nickname.length() > 0)
                 client.setNickname(nickname);
         }catch (Exception e){
