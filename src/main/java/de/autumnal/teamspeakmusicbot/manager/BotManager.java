@@ -140,7 +140,8 @@ public class BotManager {
     }
 
     public String[] getBotUIDList(){
-        SlaveBot[] botList = (SlaveBot[]) SlaveBots.toArray();
+        SlaveBot[] botList = new SlaveBot[SlaveBots.size()];
+        botList = SlaveBots.toArray(botList);
         String[] botsUIDList = new String[botList.length];
 
         for (int i = 0; i < botList.length; i++){
