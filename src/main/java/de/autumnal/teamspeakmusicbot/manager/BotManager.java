@@ -75,6 +75,7 @@ public class BotManager {
 
     public void connectMaster(){
         try {
+            master.reloadNickname();
             if (config.server.password != null)
                 master.connect(config.server.address, config.server.password);
             else master.connect(config.server.address);

@@ -2,6 +2,7 @@ package de.autumnal.teamspeakmusicbot.client;
 
 import com.github.manevolent.ts3j.api.Client;
 import com.github.manevolent.ts3j.audio.Microphone;
+import com.github.manevolent.ts3j.event.ClientLeaveEvent;
 import com.github.manevolent.ts3j.event.DisconnectedEvent;
 import com.github.manevolent.ts3j.event.TS3Listener;
 import com.github.manevolent.ts3j.identity.LocalIdentity;
@@ -14,6 +15,7 @@ import java.util.concurrent.TimeoutException;
 public abstract class TeamspeakBot implements TS3Listener {
     protected final LocalTeamspeakClientSocket client;
     protected final LocalIdentity identity;
+    protected String nickname;
 
     public TeamspeakBot(File identityFile) throws IOException, TimeoutException {
         client = new LocalTeamspeakClientSocket();
@@ -26,7 +28,17 @@ public abstract class TeamspeakBot implements TS3Listener {
     }
 
     public void setNickname(String nickname){
+        this.nickname = nickname;
         client.setNickname(nickname);
+    }
+
+    public void reloadNickname(){
+        try{
+            if(nickname != null && nickname.length() > 0)
+                client.setNickname(nickname);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     protected void setMicrophone(Microphone mic) {
@@ -54,7 +66,17 @@ public abstract class TeamspeakBot implements TS3Listener {
         }
     }
 
-    public int getCurrentChannelUserCount(){ //Ziemlich langsam und ineffizient, irgendwann verbessern (Wenn man die Clients in einem bestimmten Channel zählen kann)
+    @Override
+    public void onClientLeave(ClientLeaveEvent e) {
+        //This happens quite a lot.
+        //subject to change
+        reloadNickname();
+    }
+
+    public int getCurrentChannelUserCount(){
+        //Ziemlich langsam und ineffizient, irgendwann verbessern
+        //(Wenn man die Clients in einem bestimmten Channel zählen kann)
+        
         try {
             Iterable<Client> clients = client.listClients();
             int i = 0;
