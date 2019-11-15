@@ -142,6 +142,7 @@ public class MasterBot extends TeamspeakBot {
         try {
             client.joinChannel(BotChannelID, "");
         } catch (Exception f) {
+            System.err.println("Bot couldn't join BotChannel");
             f.printStackTrace();
         }
     }

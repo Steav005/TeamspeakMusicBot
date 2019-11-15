@@ -178,7 +178,7 @@ public class SlaveBot extends TeamspeakBot {
 
     public void addTrackToPlayer(final int clientID, final String query){
         if (player == null) {
-            //System.err.println(LogBuilder.Build(botID, guild.getIdLong(), userID, query) + "Failed because there is no Player");
+            System.err.println("Track add failed, because there is no player");
             return;
         }
 
@@ -215,7 +215,6 @@ public class SlaveBot extends TeamspeakBot {
     public void onClientMoved(ClientMovedEvent e) {
         try {
             if (e.getClientId() != client.getClientId()) {
-                System.out.println(getCurrentChannelUserCount());
                 if(getCurrentChannelUserCount() == 1) client.disconnect();
                 return;
             }

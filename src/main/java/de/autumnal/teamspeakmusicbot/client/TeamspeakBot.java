@@ -29,7 +29,7 @@ public abstract class TeamspeakBot implements TS3Listener {
 
     public void setNickname(String nickname){
         this.nickname = nickname;
-        client.setNickname(nickname);
+        reloadNickname();
     }
 
     public void reloadNickname(){
@@ -37,12 +37,18 @@ public abstract class TeamspeakBot implements TS3Listener {
             if(nickname != null && nickname.length() > 0)
                 client.setNickname(nickname);
         }catch (Exception e){
-            e.printStackTrace();
+            System.err.println("Couldn't change own Nickname");
+            //e.printStackTrace();
         }
     }
 
     protected void setMicrophone(Microphone mic) {
-        client.setMicrophone(mic);
+        try {
+            client.setMicrophone(mic);
+        }catch (Exception e){
+            System.err.println("Couldn't set Microphone");
+            e.printStackTrace();
+        }
     }
 
     public void connect(String address) throws IOException, TimeoutException {
@@ -76,7 +82,7 @@ public abstract class TeamspeakBot implements TS3Listener {
     public int getCurrentChannelUserCount(){
         //Ziemlich langsam und ineffizient, irgendwann verbessern
         //(Wenn man die Clients in einem bestimmten Channel zählen kann)
-        
+
         try {
             Iterable<Client> clients = client.listClients();
             int i = 0;
@@ -86,6 +92,7 @@ public abstract class TeamspeakBot implements TS3Listener {
             }
             return i;
         } catch (Exception e) {
+            System.err.println("Couldn't count user in channel");
             e.printStackTrace();
             return -1;
         }
