@@ -103,14 +103,16 @@ public class MasterBot extends TeamspeakBot {
                 return;
             case TOKEN:
                 try {
-                    client.sendPrivateMessage(e.getInvokerId(), JsonDataBaseLinker.getInstance().getTokenFromUserID(e.getInvokerId()));
+                    client.sendPrivateMessage(e.getInvokerId(), JsonDataBaseLinker.getInstance().getTokenFromUserUniqueID(
+                            client.getClientInfo(e.getInvokerId()).getUniqueIdentifier()));
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
                 return;
             case NEWTOKEN:
                 try{
-                    client.sendPrivateMessage(e.getInvokerId(), JsonDataBaseLinker.getInstance().addUser(e.getInvokerId()));
+                    client.sendPrivateMessage(e.getInvokerId(), JsonDataBaseLinker.getInstance().addUser(
+                            client.getClientInfo(e.getInvokerId()).getUniqueIdentifier()));
                 }catch (Exception ex){
                     ex.printStackTrace();
                 }

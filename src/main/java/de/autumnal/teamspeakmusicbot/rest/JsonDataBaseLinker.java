@@ -12,42 +12,42 @@ import java.util.concurrent.ConcurrentHashMap;
 public class JsonDataBaseLinker {
     private final String DATABASENAME = "logintoken.json";
     private static JsonDataBaseLinker singleton;
-    private ConcurrentHashMap<String, Integer> database;
+    private ConcurrentHashMap<String, String> database;
 
     private JsonDataBaseLinker(){
-        ConcurrentHashMap<String, Integer> map = loadDataBase();
+        ConcurrentHashMap<String, String> map = loadDataBase();
         if(map != null)
             database = map;
         else database = new ConcurrentHashMap<>();
     }
 
-    public int getUserIDFromToken(String token) {
-        if(token == null) return -1;
-        return database.getOrDefault(token, -1);
+    public String getUserUniqueIDFromToken(String token) {
+        if(token == null) return "";
+        return database.getOrDefault(token, "");
     }
 
-    public String getTokenFromUserID(int userID){
-        if(database.containsValue(userID))
-            for(Map.Entry<String, Integer> e: database.entrySet())
-                if(e.getValue() == userID)
+    public String getTokenFromUserUniqueID(String uid){
+        if(database.containsValue(uid))
+            for(Map.Entry<String, String> e: database.entrySet())
+                if(e.getValue().equals(uid))
                     return e.getKey();
 
         return null;
     }
 
-    public synchronized void removeUser(int userID){
-        String token = getTokenFromUserID(userID);
+    public synchronized void removeUser(String uid){
+        String token = getTokenFromUserUniqueID(uid);
         if(token != null){
             database.remove(token);
             saveDataBase();
         }
     }
 
-    public synchronized String addUser(int userID){
-        removeUser(userID);
+    public synchronized String addUser(String uid){
+        removeUser(uid);
 
         String token = getUniqueToken();
-        database.putIfAbsent(token, userID);
+        database.putIfAbsent(token, uid);
         saveDataBase();
 
         return token;
@@ -65,7 +65,7 @@ public class JsonDataBaseLinker {
 
     }
 
-    private synchronized ConcurrentHashMap<String, Integer> loadDataBase(){
+    private synchronized ConcurrentHashMap<String, String> loadDataBase(){
         try {
             File file = new File(DATABASENAME);
             if (file.exists()) {
@@ -74,8 +74,8 @@ public class JsonDataBaseLinker {
                 if(json.length() < 2) return null;
 
                 ObjectMapper mapper = new ObjectMapper();
-                TypeReference<ConcurrentHashMap<String, Integer>> typeReference =
-                        new TypeReference<ConcurrentHashMap<String, Integer>>() {};
+                TypeReference<ConcurrentHashMap<String, String>> typeReference =
+                        new TypeReference<ConcurrentHashMap<String, String>>() {};
 
                 return mapper.readValue(json, typeReference);
             }
@@ -88,7 +88,7 @@ public class JsonDataBaseLinker {
 
     private String getUniqueToken(){
         String token = java.util.UUID.randomUUID().toString();
-        if(getUserIDFromToken(token) != -1) return getUniqueToken();
+        if(!getUserUniqueIDFromToken(token).equals("")) return getUniqueToken();
         return token;
     }
 

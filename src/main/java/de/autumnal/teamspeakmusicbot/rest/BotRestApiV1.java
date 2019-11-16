@@ -23,7 +23,9 @@ public class BotRestApiV1 {
     @Path("/verify")
     public Response verify(@HeaderParam("token")  String token){
         try {
-            int user = JsonDataBaseLinker.getInstance().getUserIDFromToken(token);
+            String uid = JsonDataBaseLinker.getInstance().getUserUniqueIDFromToken(token);
+            if(uid.equals("")) return Response.status(401).build();
+            int user = BotManager.getInstance().getClientIDbyUniqueID(uid);
             if (user == -1) return Response.status(401).build();
 
             return Response.ok().build();
@@ -37,7 +39,9 @@ public class BotRestApiV1 {
     @Path("/player/song")
     public Response add(@HeaderParam("token") String token, String song){
         try {
-            int user = JsonDataBaseLinker.getInstance().getUserIDFromToken(token);
+            String uid = JsonDataBaseLinker.getInstance().getUserUniqueIDFromToken(token);
+            if(uid.equals("")) return Response.status(401).build();
+            int user = BotManager.getInstance().getClientIDbyUniqueID(uid);
             if (user == -1) return Response.status(401).build();
             SlaveBot bot = BotManager.getInstance().getBotByUser(user);
             if (bot == null || song == null) return Response.status(400).build();
@@ -55,7 +59,9 @@ public class BotRestApiV1 {
     @Path("/player")
     public Response pause(@HeaderParam("token") String token, String cmd){
         try {
-            int user = JsonDataBaseLinker.getInstance().getUserIDFromToken(token);
+            String uid = JsonDataBaseLinker.getInstance().getUserUniqueIDFromToken(token);
+            if(uid.equals("")) return Response.status(401).build();
+            int user = BotManager.getInstance().getClientIDbyUniqueID(uid);
             if (user == -1) return Response.status(401).build();
             SlaveBot bot = BotManager.getInstance().getBotByUser(user);
             if (bot == null) return Response.status(400).build();
@@ -92,7 +98,9 @@ public class BotRestApiV1 {
     public Response playmode(@HeaderParam("token") String token, String playmode){
         try {
             Playmode mode = Playmode.valueOf(playmode.toUpperCase());
-            int user = JsonDataBaseLinker.getInstance().getUserIDFromToken(token);
+            String uid = JsonDataBaseLinker.getInstance().getUserUniqueIDFromToken(token);
+            if(uid.equals("")) return Response.status(401).build();
+            int user = BotManager.getInstance().getClientIDbyUniqueID(uid);
             if (user == -1) return Response.status(401).build();
             SlaveBot bot = BotManager.getInstance().getBotByUser(user);
             if (bot == null) return Response.status(400).build();
@@ -112,7 +120,9 @@ public class BotRestApiV1 {
     @Path("/player/position")
     public Response forward(@HeaderParam("token") String token, @DefaultValue("-1") long pos){
         try {
-            int user = JsonDataBaseLinker.getInstance().getUserIDFromToken(token);
+            String uid = JsonDataBaseLinker.getInstance().getUserUniqueIDFromToken(token);
+            if(uid.equals("")) return Response.status(401).build();
+            int user = BotManager.getInstance().getClientIDbyUniqueID(uid);
             if (user == -1) return Response.status(401).build();
             SlaveBot bot = BotManager.getInstance().getBotByUser(user);
             if (bot == null) return Response.status(400).build();
@@ -131,7 +141,9 @@ public class BotRestApiV1 {
     @Path("/player/queue")
     public Response list(@HeaderParam("token") String token, @DefaultValue("-1") @HeaderParam("queuechangeid") long changeid, @DefaultValue("50") @HeaderParam("length") int length){
         try {
-            int user = JsonDataBaseLinker.getInstance().getUserIDFromToken(token);
+            String uid = JsonDataBaseLinker.getInstance().getUserUniqueIDFromToken(token);
+            if(uid.equals("")) return Response.status(401).build();
+            int user = BotManager.getInstance().getClientIDbyUniqueID(uid);
             if (user == -1) return Response.status(401).build();
             SlaveBot bot = BotManager.getInstance().getBotByUser(user);
             if (bot == null) return Response.status(400).build();
@@ -149,7 +161,9 @@ public class BotRestApiV1 {
     @Path("/bot")
     public Response join(@HeaderParam("token") String token, String cmd){
         try {
-            int user = JsonDataBaseLinker.getInstance().getUserIDFromToken(token);
+            String uid = JsonDataBaseLinker.getInstance().getUserUniqueIDFromToken(token);
+            if(uid.equals("")) return Response.status(401).build();
+            int user = BotManager.getInstance().getClientIDbyUniqueID(uid);
             if (user == -1) return Response.status(401).build();
 
             BotCommand command = BotCommand.valueOf(cmd);
@@ -184,7 +198,8 @@ public class BotRestApiV1 {
     @Path("/bot")
     public Response botList(@HeaderParam("token") String token){
         try {
-            int user = JsonDataBaseLinker.getInstance().getUserIDFromToken(token);
+            String uid = JsonDataBaseLinker.getInstance().getUserUniqueIDFromToken(token);
+            int user = BotManager.getInstance().getClientIDbyUniqueID(uid);
             if (user == -1) return Response.status(401).build();
 
             return Response.ok(new Gson().toJson(BotManager.getInstance().getBotUIDList()), MediaType.APPLICATION_JSON_TYPE).build();
