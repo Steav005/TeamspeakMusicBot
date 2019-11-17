@@ -21,33 +21,33 @@ public class JsonDataBaseLinker {
         else database = new ConcurrentHashMap<>();
     }
 
-    public int getUserIDFromToken(String token) {
+    public int getUserDatabaseIDFromToken(String token) {
         if(token == null) return -1;
         return database.getOrDefault(token, -1);
     }
 
-    public String getTokenFromUserID(int userID){
-        if(database.containsValue(userID))
+    public String getTokenFromUserDatabaseID(int userDatabaseID){
+        if(database.containsValue(userDatabaseID))
             for(Map.Entry<String, Integer> e: database.entrySet())
-                if(e.getValue() == userID)
+                if(e.getValue() == userDatabaseID)
                     return e.getKey();
 
         return null;
     }
 
-    public synchronized void removeUser(int userID){
-        String token = getTokenFromUserID(userID);
+    public synchronized void removeUser(int userDatabaseID){
+        String token = getTokenFromUserDatabaseID(userDatabaseID);
         if(token != null){
             database.remove(token);
             saveDataBase();
         }
     }
 
-    public synchronized String addUser(int userID){
-        removeUser(userID);
+    public synchronized String addUser(int userDatabaseID){
+        removeUser(userDatabaseID);
 
         String token = getUniqueToken();
-        database.putIfAbsent(token, userID);
+        database.putIfAbsent(token, userDatabaseID);
         saveDataBase();
 
         return token;
@@ -88,7 +88,7 @@ public class JsonDataBaseLinker {
 
     private String getUniqueToken(){
         String token = java.util.UUID.randomUUID().toString();
-        if(getUserIDFromToken(token) != -1) return getUniqueToken();
+        if(getUserDatabaseIDFromToken(token) != -1) return getUniqueToken();
         return token;
     }
 

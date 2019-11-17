@@ -2,6 +2,7 @@ package de.autumnal.teamspeakmusicbot.client;
 
 import com.github.manevolent.ts3j.api.Client;
 import com.github.manevolent.ts3j.audio.Microphone;
+import com.github.manevolent.ts3j.command.CommandException;
 import com.github.manevolent.ts3j.event.ClientLeaveEvent;
 import com.github.manevolent.ts3j.event.DisconnectedEvent;
 import com.github.manevolent.ts3j.event.TS3Listener;
@@ -10,6 +11,7 @@ import com.github.manevolent.ts3j.protocol.socket.client.LocalTeamspeakClientSoc
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 public abstract class TeamspeakBot implements TS3Listener {
@@ -71,6 +73,18 @@ public abstract class TeamspeakBot implements TS3Listener {
             System.err.println("Couldn't get ChannelID for Client " + clientID);
             return -1;
         }
+    }
+
+    public int getClientIDbyDatabaseID(int did){
+        try {
+            for (Client c: client.listClients()) {
+                if(c.getDatabaseId() == did)
+                    return c.getId();
+            }
+            return -1;
+        } catch (Exception e) {
+            return -1;
+        } 
     }
 
     @Override

@@ -89,6 +89,10 @@ public class BotManager {
         return master.getClientChannelID(userid);
     }
 
+    public int getClientIDbyDatabaseID(int did){
+        return master.getClientIDbyDatabaseID(did);
+    }
+
     public SlaveBot getBotByUser(int userId){
         try {
             int channelId = getChannelByUser(userId);
@@ -139,7 +143,7 @@ public class BotManager {
         return true;
     }
 
-    public String[] getBotUIDList(){
+    public String[] getBotUIDList(){ //TODO redo with unique IDs
         SlaveBot[] botList = new SlaveBot[SlaveBots.size()];
         botList = SlaveBots.toArray(botList);
         String[] botsUIDList = new String[botList.length];
