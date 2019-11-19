@@ -1,5 +1,6 @@
 package de.autumnal.teamspeakmusicbot.manager;
 
+import com.github.manevolent.ts3j.api.Client;
 import com.sedmelluq.discord.lavaplayer.format.AudioDataFormat;
 import com.sedmelluq.discord.lavaplayer.player.AudioConfiguration;
 import de.autumnal.teamspeakmusicbot.client.MasterBot;
@@ -85,21 +86,12 @@ public class BotManager {
         }
     }
 
-    public int getChannelByUser(int userid){
-        return master.getClientChannelID(userid);
-    }
-
-    public int getClientIDbyDatabaseID(int did){
-        return master.getClientIDbyDatabaseID(did);
-    }
-
-    public SlaveBot getBotByUser(int userId){
+    public SlaveBot getBotByUser(TeamspeakUser user){
         try {
-            int channelId = getChannelByUser(userId);
-            if(channelId == -1) return null;
+            if(user == null) return null;
 
             for (SlaveBot b: SlaveBots){
-                if(b.getWantedChannel() == channelId)
+                if(b.getWantedChannel() == user.getChannelID())
                     return b;
             }
             return null;
@@ -143,7 +135,7 @@ public class BotManager {
         return true;
     }
 
-    public String[] getBotUIDList(){ //TODO redo with unique IDs
+    public String[] getBotUIDList(){
         SlaveBot[] botList = new SlaveBot[SlaveBots.size()];
         botList = SlaveBots.toArray(botList);
         String[] botsUIDList = new String[botList.length];
@@ -153,6 +145,10 @@ public class BotManager {
         }
 
         return botsUIDList;
+    }
+
+    public ArrayList<Client> getClientList(){
+        return master.getClientList();
     }
 
     public BotAudioPlayer getNewPlayer(){

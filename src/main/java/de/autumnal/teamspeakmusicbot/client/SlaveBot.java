@@ -8,7 +8,9 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import de.autumnal.teamspeakmusicbot.config.Bot;
 import de.autumnal.teamspeakmusicbot.manager.BotManager;
+import de.autumnal.teamspeakmusicbot.manager.ClientManager;
 import de.autumnal.teamspeakmusicbot.manager.Command;
+import de.autumnal.teamspeakmusicbot.manager.TeamspeakUser;
 import de.autumnal.teamspeakmusicbot.music.BotAudioPlayer;
 import de.autumnal.teamspeakmusicbot.music.enums.Playmode;
 import de.autumnal.teamspeakmusicbot.rest.JsonDataBaseLinker;
@@ -56,15 +58,17 @@ public class SlaveBot extends TeamspeakBot {
 
     @Override
     public void onTextMessage(TextMessageEvent e) {
+        TeamspeakUser invoker = ClientManager.getInstance().getUserByUserID(e.getInvokerId());
+
         if(e.getTargetMode() != TextMessageTargetMode.CLIENT
                 || e.getMessage().isEmpty()
                 || e.getInvokerId() == client.getClientId()
-                || !inSameChannel(e.getInvokerId())) return;
+                || invoker.getChannelID() == wantedChannel) return;
 
         if(e.getMessage().startsWith("!"))
             handleCommand(e);
         else
-            addTrackToPlayer(e.getInvokerId(), e.getMessage().replace("[URL]", "").replace("[/URL]", ""));
+            addTrackToPlayer(e.getMessage().replace("[URL]", "").replace("[/URL]", ""));
     }
 
     public void disconnect() throws InterruptedException, ExecutionException, TimeoutException, IOException {
@@ -149,7 +153,7 @@ public class SlaveBot extends TeamspeakBot {
             //    }
             //    return;
             default: //ADD case
-                addTrackToPlayer(e.getInvokerId(), e.getMessage());
+                addTrackToPlayer(e.getMessage());
                 return;
         }
     }
@@ -178,7 +182,7 @@ public class SlaveBot extends TeamspeakBot {
         BotManager.getInstance().reloadBot(this);
     }
 
-    public void addTrackToPlayer(final int clientID, final String query){
+    public void addTrackToPlayer(final String query){
         if (player == null) {
             System.err.println("Track add failed, because there is no player");
             return;
@@ -217,7 +221,10 @@ public class SlaveBot extends TeamspeakBot {
     public void onClientMoved(ClientMovedEvent e) {
         try {
             if (e.getClientId() != client.getClientId()) {
-                if(getCurrentChannelUserCount() == 1) client.disconnect();
+                ClientManager clientManager = ClientManager.getInstance();
+                clientManager.forceUpdate();
+                int clientsInChannel = clientManager.getUserCountbyChannelID(wantedChannel);
+                if(clientsInChannel == 1) client.disconnect();
                 return;
             }
 
@@ -232,8 +239,10 @@ public class SlaveBot extends TeamspeakBot {
 
     @Override
     public void onClientLeave(ClientLeaveEvent e) {
-        System.out.println(getCurrentChannelUserCount());
-        if(getCurrentChannelUserCount() == 1){
+        ClientManager clientManager = ClientManager.getInstance();
+        clientManager.forceUpdate();
+        int clientsInChannel = clientManager.getUserCountbyChannelID(wantedChannel);
+        if(clientsInChannel == 1){
             try {
                 client.disconnect();
             } catch (Exception ex) {

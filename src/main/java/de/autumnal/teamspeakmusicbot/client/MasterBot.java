@@ -6,7 +6,9 @@ import com.github.manevolent.ts3j.event.ConnectedEvent;
 import com.github.manevolent.ts3j.event.DisconnectedEvent;
 import com.github.manevolent.ts3j.event.TextMessageEvent;
 import de.autumnal.teamspeakmusicbot.manager.BotManager;
+import de.autumnal.teamspeakmusicbot.manager.ClientManager;
 import de.autumnal.teamspeakmusicbot.manager.Command;
+import de.autumnal.teamspeakmusicbot.manager.TeamspeakUser;
 import de.autumnal.teamspeakmusicbot.music.enums.Playmode;
 import de.autumnal.teamspeakmusicbot.rest.JsonDataBaseLinker;
 
@@ -29,12 +31,13 @@ public class MasterBot extends TeamspeakBot {
                 || e.getInvokerId() == client.getClientId()) return;
 
         //BotManager.getInstance().BotJoinChannel(getClientChannelID(e.getInvokerId()));
-        SlaveBot bot = BotManager.getInstance().getBotByUser(e.getInvokerId());
+        TeamspeakUser user = ClientManager.getInstance().getUserByUserID(e.getInvokerId());
+        SlaveBot bot = BotManager.getInstance().getBotByUser(user);
 
         if(e.getMessage().startsWith("!"))
             handleCommand(e, bot);
         else
-            bot.addTrackToPlayer(e.getInvokerId(), e.getMessage().replace("[URL]", "").replace("[/URL]", ""));
+            bot.addTrackToPlayer(e.getMessage().replace("[URL]", "").replace("[/URL]", ""));
     }
 
     @Override
@@ -63,7 +66,10 @@ public class MasterBot extends TeamspeakBot {
                 }
                 return;
             case JOIN:
-                BotManager.getInstance().BotJoinChannel(getClientChannelID(e.getInvokerId()));
+                ClientManager clientManager = ClientManager.getInstance();
+                clientManager.forceUpdate();
+                TeamspeakUser user = clientManager.getUserByUserID(e.getInvokerId());
+                BotManager.getInstance().BotJoinChannel(user.getChannelID());
                 return;
             case LEAVE:
                 try {
@@ -134,18 +140,16 @@ public class MasterBot extends TeamspeakBot {
             default: //Add case
                 if(bot == null) return;
 
-                bot.addTrackToPlayer(e.getInvokerId(), e.getMessage());
+                bot.addTrackToPlayer(e.getMessage());
                 return;
         }
     }
 
     public void joinBotChannel(){
-        if(getCurrentChannelID() == BotChannelID) return;
         try {
             client.joinChannel(BotChannelID, "");
         } catch (Exception f) {
             System.err.println("Bot couldn't join BotChannel");
-            f.printStackTrace();
         }
     }
 

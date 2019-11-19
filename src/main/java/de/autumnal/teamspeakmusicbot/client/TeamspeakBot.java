@@ -11,6 +11,7 @@ import com.github.manevolent.ts3j.protocol.socket.client.LocalTeamspeakClientSoc
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
@@ -62,31 +63,6 @@ public abstract class TeamspeakBot implements TS3Listener {
         client.connect(address, password, 10000);
     }
 
-    public int getCurrentChannelID(){
-        return getClientChannelID(client.getClientId());
-    }
-
-    public int getClientChannelID(int clientID){
-        try {
-            return client.getClientInfo(clientID).getChannelId();
-        } catch (Exception e){
-            System.err.println("Couldn't get ChannelID for Client " + clientID);
-            return -1;
-        }
-    }
-
-    public int getClientIDbyDatabaseID(int did){
-        try {
-            for (Client c: client.listClients()) {
-                if(c.getDatabaseId() == did)
-                    return c.getId();
-            }
-            return -1;
-        } catch (Exception e) {
-            return -1;
-        } 
-    }
-
     @Override
     public void onClientLeave(ClientLeaveEvent e) {
         //This happens quite a lot.
@@ -94,29 +70,16 @@ public abstract class TeamspeakBot implements TS3Listener {
         reloadNickname();
     }
 
-    public int getCurrentChannelUserCount(){
-        //Ziemlich langsam und ineffizient, irgendwann verbessern
-        //(Wenn man die Clients in einem bestimmten Channel zählen kann)
-
-        try {
+    public ArrayList<Client> getClientList(){
+        try{
             Iterable<Client> clients = client.listClients();
-            int i = 0;
-            int channelID = getCurrentChannelID();
-            for(Client c: clients){
-                if(c.getChannelId() == channelID) i++;
+            ArrayList<Client> clientsArray = new ArrayList<>();
+            for(Client c : clients) {
+                clientsArray.add(c);
             }
-            return i;
-        } catch (Exception e) {
-            System.err.println("Couldn't count user in channel");
-            e.printStackTrace();
-            return -1;
+            return clientsArray;
+        }catch (Exception e){
+            return new ArrayList<>();
         }
-    }
-
-    public boolean inSameChannel(int clientID){
-        int currentChannel = getCurrentChannelID();
-        if(currentChannel == -1) return false;
-
-        return currentChannel == getClientChannelID(clientID);
     }
 }

@@ -3,6 +3,8 @@ package de.autumnal.teamspeakmusicbot.rest;
 import de.autumnal.teamspeakmusicbot.client.SlaveBot;
 import com.google.gson.Gson;
 import de.autumnal.teamspeakmusicbot.manager.BotManager;
+import de.autumnal.teamspeakmusicbot.manager.ClientManager;
+import de.autumnal.teamspeakmusicbot.manager.TeamspeakUser;
 import de.autumnal.teamspeakmusicbot.music.enums.Playmode;
 import de.autumnal.teamspeakmusicbot.music.json.Player;
 
@@ -25,8 +27,8 @@ public class BotRestApiV1 {
         try {
             int did = JsonDataBaseLinker.getInstance().getUserDatabaseIDFromToken(token);
             if(did == -1) return Response.status(401).build();
-            int user = BotManager.getInstance().getClientIDbyDatabaseID(did);
-            if (user == -1) return Response.status(401).build();
+            TeamspeakUser user = ClientManager.getInstance().getUserByDatabaseID(did);
+            if (user == null) return Response.status(401).build();
 
             return Response.ok().build();
         }catch (Exception e){
@@ -41,12 +43,12 @@ public class BotRestApiV1 {
         try {
             int did = JsonDataBaseLinker.getInstance().getUserDatabaseIDFromToken(token);
             if(did == -1) return Response.status(401).build();
-            int user = BotManager.getInstance().getClientIDbyDatabaseID(did);
-            if (user == -1) return Response.status(401).build();
+            TeamspeakUser user = ClientManager.getInstance().getUserByDatabaseID(did);
+            if (user == null) return Response.status(401).build();
             SlaveBot bot = BotManager.getInstance().getBotByUser(user);
             if (bot == null || song == null) return Response.status(400).build();
 
-            bot.addTrackToPlayer(user, song);
+            bot.addTrackToPlayer(song);
 
             return Response.ok().build();
         }catch (Exception e){
@@ -61,8 +63,8 @@ public class BotRestApiV1 {
         try {
             int did = JsonDataBaseLinker.getInstance().getUserDatabaseIDFromToken(token);
             if(did == -1) return Response.status(401).build();
-            int user = BotManager.getInstance().getClientIDbyDatabaseID(did);
-            if (user == -1) return Response.status(401).build();
+            TeamspeakUser user = ClientManager.getInstance().getUserByDatabaseID(did);
+            if (user == null) return Response.status(401).build();
             SlaveBot bot = BotManager.getInstance().getBotByUser(user);
             if (bot == null) return Response.status(400).build();
 
@@ -100,8 +102,8 @@ public class BotRestApiV1 {
             Playmode mode = Playmode.valueOf(playmode.toUpperCase());
             int did = JsonDataBaseLinker.getInstance().getUserDatabaseIDFromToken(token);
             if(did == -1) return Response.status(401).build();
-            int user = BotManager.getInstance().getClientIDbyDatabaseID(did);
-            if (user == -1) return Response.status(401).build();
+            TeamspeakUser user = ClientManager.getInstance().getUserByDatabaseID(did);
+            if (user == null) return Response.status(401).build();
             SlaveBot bot = BotManager.getInstance().getBotByUser(user);
             if (bot == null) return Response.status(400).build();
 
@@ -122,8 +124,8 @@ public class BotRestApiV1 {
         try {
             int did = JsonDataBaseLinker.getInstance().getUserDatabaseIDFromToken(token);
             if(did == -1) return Response.status(401).build();
-            int user = BotManager.getInstance().getClientIDbyDatabaseID(did);
-            if (user == -1) return Response.status(401).build();
+            TeamspeakUser user = ClientManager.getInstance().getUserByDatabaseID(did);
+            if (user == null) return Response.status(401).build();
             SlaveBot bot = BotManager.getInstance().getBotByUser(user);
             if (bot == null) return Response.status(400).build();
             if(pos == -1) return Response.status(400).build();
@@ -143,8 +145,8 @@ public class BotRestApiV1 {
         try {
             int did = JsonDataBaseLinker.getInstance().getUserDatabaseIDFromToken(token);
             if(did == -1) return Response.status(401).build();
-            int user = BotManager.getInstance().getClientIDbyDatabaseID(did);
-            if (user == -1) return Response.status(401).build();
+            TeamspeakUser user = ClientManager.getInstance().getUserByDatabaseID(did);
+            if (user == null) return Response.status(401).build();
             SlaveBot bot = BotManager.getInstance().getBotByUser(user);
             if (bot == null) return Response.status(400).build();
             if (changeid == bot.getPlayer().getLastQueueChange())
@@ -163,13 +165,13 @@ public class BotRestApiV1 {
         try {
             int did = JsonDataBaseLinker.getInstance().getUserDatabaseIDFromToken(token);
             if(did == -1) return Response.status(401).build();
-            int user = BotManager.getInstance().getClientIDbyDatabaseID(did);
-            if (user == -1) return Response.status(401).build();
+            TeamspeakUser user = ClientManager.getInstance().getUserByDatabaseID(did);
+            if (user == null) return Response.status(401).build();
 
             BotCommand command = BotCommand.valueOf(cmd);
             switch (command){
                 case JOIN:
-                    int channel = BotManager.getInstance().getChannelByUser(user);
+                    int channel = user.getChannelID();
                     if (channel == -1) return Response.status(400).build();
 
                     if(!BotManager.getInstance().BotJoinChannel(channel))
@@ -200,8 +202,8 @@ public class BotRestApiV1 {
         try {
             int did = JsonDataBaseLinker.getInstance().getUserDatabaseIDFromToken(token);
             if(did == -1) return Response.status(401).build();
-            int user = BotManager.getInstance().getClientIDbyDatabaseID(did);
-            if (user == -1) return Response.status(401).build();
+            TeamspeakUser user = ClientManager.getInstance().getUserByDatabaseID(did);
+            if (user == null) return Response.status(401).build();
 
             return Response.ok(new Gson().toJson(BotManager.getInstance().getBotUIDList()), MediaType.APPLICATION_JSON_TYPE).build();
         }catch (Exception e){
