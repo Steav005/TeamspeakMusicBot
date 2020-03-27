@@ -1,0 +1,56 @@
+{
+  "server": {
+    "address": "example.com",
+    "password": null,
+    "masterChannelID": 2477
+  },
+  "bots": [
+    {
+      "name": "MusicBotMaster",
+      "identity": "identities/TestMusicBot.ini",
+      "master": true
+    },
+    {
+      "name": "MusicBot_1",
+      "identity": "identities/MusicBot_1.ini"
+    },
+    {
+      "name": "MusicBot_2",
+      "identity": "identities/MusicBot_2.ini"
+    },
+    {
+      "name": "MusicBot_3",
+      "identity": "identities/MusicBot_3.ini"
+    },
+    {
+      "name": "MusicBot_4",
+      "identity": "identities/MusicBot_4.ini"
+    },
+    {
+      "name": "MusicBot_5",
+      "identity": "identities/MusicBot_5.ini"
+    },
+    {
+      "name": "MusicBot_6",
+      "identity": "identities/MusicBot_6.ini"
+    },
+    {
+      "name": "MusicBot_7",
+      "identity": "identities/MusicBot_7.ini"
+    },
+    {
+      "name": "MusicBot_8",
+      "identity": "identities/MusicBot_8.ini"
+    },
+    {
+      "name": "MusicBot_9",
+      "identity": "identities/MusicBot_9.ini"
+    },
+    {
+      "name": "MusicBot_10",
+      "identity": "identities/MusicBot_10.ini"
+    }
+  ],
+  "restaddress": "teamspeak.example.de",
+  "volume": 10
+}
